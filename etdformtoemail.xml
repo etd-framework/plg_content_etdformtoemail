@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.6" type="plugin" group="content" method="upgrade">
+    <name>plg_content_etdformtoemail</name>
+    <author>ETD Solutions</author>
+    <creationDate>Septembre 2016</creationDate>
+    <copyright>(C) 2016 ETD Solutions. All rights reserved.</copyright>
+    <license>Apache 2.0</license>
+    <authorEmail>contact@etd-solutions.com</authorEmail>
+    <authorUrl>etd-solutions.com</authorUrl>
+    <version>1.0.0</version>
+    <description>PLG_CONTENT_ETDFORMTOEMAIL_XML_DESCRIPTION</description>
+    <files>
+        <filename plugin="etdformtoemail">etdformtoemail.php</filename>
+        <folder>assets</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_content_etdformtoemail.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_content_etdformtoemail.sys.ini</language>
+        <language tag="fr-FR">language/fr-FR/fr-FR.plg_content_etdformtoemail.ini</language>
+        <language tag="fr-FR">language/fr-FR/fr-FR.plg_content_etdformtoemail.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                        name="default_to"
+                        type="email"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_TO_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_TO_DESC"
+                        required="true"
+                />
+
+                <field
+                        name="default_to_name"
+                        type="text"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_TO_NAME_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_TO_NAME_DESC"
+                        required="true"
+                />
+
+                <field
+                        name="default_from"
+                        type="email"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_FROM_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_FROM_DESC"
+                />
+
+                <field
+                        name="default_from_name"
+                        type="text"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_FROM_NAME_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_FROM_NAME_DESC"
+                />
+
+                <field
+                        name="default_subject"
+                        type="text"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_SUBJECT_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_SUBJECT_DESC"
+                        default="[SITENAME] - Contact from the website"
+                        maxlength="50"
+                />
+
+                <field
+                        name="default_success_message"
+                        type="text"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_SUCCESS_MESSAGE_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_DEFAULT_SUCCESS_MESSAGE_DESC"
+                        default=""
+                        maxlength="255"
+                />
+
+                <field
+                        name="default_body"
+                        type="textarea"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_BODY_LABEL"
+                        desc="PLG_CONTENT_ETDFORMTOEMAIL_BODY_DESC"
+                        default="Contact from the website.&#13;&#10;Submitted: [DATE]&#13;&#10;IP Address: [IP]&#13;&#10;&#13;&#10;[FIELDS]"
+                        rows="10"
+                />
+
+                <field
+                        name="beautify_names"
+                        type="radio"
+                        label="PLG_CONTENT_ETDFORMTOEMAIL_BEAUTIFY_NAMES_LABEL"
+                        description="PLG_CONTENT_ETDFORMTOEMAIL_BEAUTIFY_NAMES_DESC"
+                        default="1"
+                        class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+            </fieldset>
+        </fields>
+    </config>
+</extension>
