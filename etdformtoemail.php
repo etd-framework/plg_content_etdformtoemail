@@ -46,14 +46,11 @@ class PlgContentEtdFormToEmail extends JPlugin {
         }
 
         // Contrôle du captcha si besoin
-        $input_name  = $app->getUserState('etdformtoemail.form' . $formid . '.captcha.input');
-        $input_value = $app->getUserState('etdformtoemail.form' . $formid . '.captcha.value');
-
-        if (isset($input_name)) {
-            $value = $input->get($input_name, null, 'uint');
-            if ($value != $input_value) {
-                throw new \InvalidArgumentException(JText::_('PLG_CONTENT_ETDFORMTOEMAIL_CAPTCHA'));
-            }
+        JPluginHelper::importPlugin('captcha');
+        $dispatcher = JDispatcher::getInstance();
+        $res = $dispatcher->trigger('onCheckAnswer',$input->get('recaptcha_response_field'));
+        if(!$res[0]){
+            throw new \InvalidArgumentException(JText::_('PLG_CONTENT_ETDFORMTOEMAIL_CAPTCHA'));
         }
 
         /**
@@ -74,6 +71,7 @@ class PlgContentEtdFormToEmail extends JPlugin {
         $data = $input->post->getArray();
         unset($data['formid']);
         unset($data[JSession::getFormToken()]);
+        unset($data['g-recaptcha-response']);
         if (isset($input_name)) {
             unset($data[$input_name]);
         }
@@ -194,13 +192,19 @@ class PlgContentEtdFormToEmail extends JPlugin {
             $app->setUserState('etdformtoemail.form' . $i . '.params', $params);
 
             if (strpos($content, '{etdformtoemailcaptcha') !== false) {
-                $a          = rand(0, 20);
-                $b          = rand(1, 20);
-                $input_name = "c" . JUserHelper::genRandomPassword(5);
-                $app->setUserState('etdformtoemail.form' . $i . '.captcha.input', $input_name);
-                $app->setUserState('etdformtoemail.form' . $i . '.captcha.value', $a + $b);
-                $content = str_replace("{etdformtoemailcaptcha input}", '<input type="text" class="form-control" name="' . $input_name . '">', $content);
-                $content = str_replace("{etdformtoemailcaptcha label}", "<script>document.write('" . $a . "&pl' + 'us;" . $b . "&eq' + 'ua' + 'ls; ?');</script>", $content);
+
+                JPluginHelper::importPlugin('captcha');
+                $dispatcher = JDispatcher::getInstance();
+
+                // This will put the code to load reCAPTCHA's JavaScript file into your <head>
+                $dispatcher->trigger('onInit', 'dynamic_recaptcha_1');
+
+                // This will return the array of HTML code.
+                $recaptcha = $dispatcher->trigger('onDisplay', array(null, 'dynamic_recaptcha_1', 'class=""'));
+
+                $content = str_replace("{etdformtoemailcaptcha label}", "<label>Captcha*: </label>", $content);
+                $content = str_replace("{etdformtoemailcaptcha input}", $recaptcha[0], $content);
+
             } else {
                 $app->setUserState('etdformtoemail.form' . $i . '.captcha.input', null);
                 $app->setUserState('etdformtoemail.form' . $i . '.captcha.value', null);
